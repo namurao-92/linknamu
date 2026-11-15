@@ -12,7 +12,11 @@ const globalForMongo = globalThis as unknown as {
 export async function getDb() {
   if (!uri) return null;
   if (!globalForMongo._mongoClientPromise) {
-    globalForMongo._mongoClientPromise = new MongoClient(uri).connect();
+    globalForMongo._mongoClientPromise = new MongoClient(uri).connect().catch((err) => {
+      // 실패한 연결을 캐시에 남기면 이후 요청이 전부 같은 에러로 실패하므로, 비워서 다음 요청 때 재시도합니다.
+      globalForMongo._mongoClientPromise = undefined;
+      throw err;
+    });
   }
   const client = await globalForMongo._mongoClientPromise;
   return client.db(dbName);
