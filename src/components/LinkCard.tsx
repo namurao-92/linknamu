@@ -23,14 +23,17 @@ function recordClick(linkId: string) {
 }
 
 export function LinkCard({ id, title, url }: Props) {
+  // mailto: 링크는 메일 앱을 여는 것이라 새 탭을 띄우면 빈 탭만 남습니다.
+  const opensNewTab = !url.startsWith("mailto:");
+
   return (
     <a
       href={url}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={opensNewTab ? "_blank" : undefined}
+      rel={opensNewTab ? "noopener noreferrer" : undefined}
       onClick={() => recordClick(id)}
       onAuxClick={(e) => e.button === 1 && recordClick(id)}
-      className="block w-full rounded-2xl border border-stone-200 bg-white px-5 py-4 text-center font-medium shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-500 hover:shadow-md active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-emerald-500"
+      className="block w-full rounded-3xl border border-white/70 bg-white/45 px-6 py-[18px] text-center text-[15px] font-semibold text-stone-800 shadow-[0_4px_20px_-6px_rgb(160_90_50/0.18)] backdrop-blur-xl transition duration-300 ease-out hover:-translate-y-px hover:bg-white/65 hover:shadow-[0_8px_28px_-8px_rgb(160_90_50/0.25)] active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-400 dark:border-white/10 dark:bg-white/5 dark:text-stone-100 dark:shadow-[0_4px_20px_-6px_rgb(0_0_0/0.5)] dark:hover:bg-white/10"
     >
       {title}
     </a>

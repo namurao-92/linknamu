@@ -23,8 +23,14 @@ export default function RootLayout({
     <html lang="ko" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* Pretendard: 한글/영문 모두 깔끔한 산세리프. 필요한 글자만 내려받는 dynamic subset 버전 */}
+        <link
+          rel="stylesheet"
+          crossOrigin="anonymous"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
       </head>
-      <body className="min-h-dvh bg-stone-50 text-stone-900 antialiased transition-colors dark:bg-stone-950 dark:text-stone-100">
+      <body className="min-h-dvh font-sans text-stone-800 antialiased dark:text-stone-100">
         {children}
       </body>
     </html>

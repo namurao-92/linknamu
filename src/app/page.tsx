@@ -5,14 +5,14 @@ import { profile } from "@/data/profile";
 
 export default function Home() {
   return (
-    <main className="mx-auto flex w-full max-w-md flex-col items-center px-4 pb-16 pt-12 sm:pt-20">
-      <div className="fixed right-4 top-4">
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col items-center px-6 pb-12 pt-16 sm:pt-24">
+      <div className="fixed right-5 top-5 z-10">
         <ThemeToggle />
       </div>
 
       <ProfileHeader name={profile.name} bio={profile.bio} image={profile.image} />
 
-      <ul className="mt-8 flex w-full flex-col gap-3">
+      <ul className="mt-10 flex w-full flex-col gap-4">
         {profile.links.map((link) => (
           <li key={link.id}>
             <LinkCard id={link.id} title={link.title} url={link.url} />
@@ -20,7 +20,9 @@ export default function Home() {
         ))}
       </ul>
 
-      <footer className="mt-12 text-xs text-stone-400 dark:text-stone-600">링크나무</footer>
+      <footer className="mt-auto pt-16 text-xs tracking-wide text-stone-400 dark:text-stone-500">
+        링크나무
+      </footer>
     </main>
   );
 }

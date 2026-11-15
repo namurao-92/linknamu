@@ -1,3 +1,22 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+
+/* 따뜻한 크림 → 살구 그라데이션. 스크롤해도 배경이 고정되도록 fixed. */
+body {
+  background:
+    radial-gradient(60rem 40rem at 15% -10%, rgb(255 255 255 / 0.7), transparent 60%),
+    linear-gradient(165deg, #fffaf2 0%, #fdf0e4 45%, #fbdcc8 100%) fixed;
+  letter-spacing: -0.01em;
+}
+
+.dark body {
+  background:
+    radial-gradient(60rem 40rem at 15% -10%, rgb(255 200 160 / 0.08), transparent 60%),
+    linear-gradient(165deg, #1c1714 0%, #221a16 50%, #2e1f18 100%) fixed;
+}
