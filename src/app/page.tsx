@@ -1,5 +1,5 @@
 import { ProfileHeader } from "@/components/ProfileHeader";
-import { LinkCard } from "@/components/LinkCard";
+import { LinkList } from "@/components/LinkList";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { profile } from "@/data/profile";
 
@@ -12,13 +12,7 @@ export default function Home() {
 
       <ProfileHeader name={profile.name} bio={profile.bio} image={profile.image} />
 
-      <ul className="mt-10 flex w-full flex-col gap-4">
-        {profile.links.map((link) => (
-          <li key={link.id}>
-            <LinkCard id={link.id} title={link.title} url={link.url} />
-          </li>
-        ))}
-      </ul>
+      <LinkList links={profile.links} />
 
       <footer className="mt-auto pt-16 text-xs tracking-wide text-stone-400 dark:text-stone-500">
         링크나무

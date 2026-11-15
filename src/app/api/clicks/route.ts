@@ -4,6 +4,24 @@ import { profile } from "@/data/profile";
 
 const validIds = new Set(profile.links.map((l) => l.id));
 
+/** 모든 링크의 클릭 수를 한 번에 반환합니다. 예: { counts: { github: 42, blog: 3, email: 0 } } */
+export async function GET() {
+  const db = await getDb();
+  if (!db) {
+    return NextResponse.json({ error: "MONGODB_URI가 설정되지 않음" }, { status: 503 });
+  }
+
+  const docs = await db
+    .collection<{ linkId: string; count: number }>("clicks")
+    .find({ linkId: { $in: [...validIds] } }, { projection: { _id: 0, linkId: 1, count: 1 } })
+    .toArray();
+
+  const counts: Record<string, number> = Object.fromEntries([...validIds].map((id) => [id, 0]));
+  for (const doc of docs) counts[doc.linkId] = doc.count ?? 0;
+
+  return NextResponse.json({ counts }, { headers: { "Cache-Control": "no-store" } });
+}
+
 export async function POST(request: Request) {
   let linkId: unknown;
   try {
