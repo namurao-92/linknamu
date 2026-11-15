@@ -4,11 +4,22 @@ import { profile } from "@/data/profile";
 
 const validIds = new Set(profile.links.map((l) => l.id));
 
-/** DB 오류를 Vercel 로그에 남기고, 응답에는 오류 종류(예: MongoServerSelectionError)만 담습니다. */
+/**
+ * DB 오류를 Vercel 로그에 남기고, 응답에는 원인 파악용 정보(종류·코드·메시지)를 담습니다.
+ * 메시지에 접속 주소가 섞여 있어도 비밀번호가 보이지 않도록 가립니다.
+ */
 function dbError(err: unknown) {
   console.error("[api/clicks] DB 오류:", err);
-  const kind = err instanceof Error ? err.name : "UnknownError";
-  return NextResponse.json({ error: "DB 연결 실패", kind }, { status: 500 });
+  const e = err as { name?: string; code?: unknown; message?: string; cause?: { code?: unknown } };
+  return NextResponse.json(
+    {
+      error: "DB 연결 실패",
+      kind: e?.name ?? "UnknownError",
+      code: e?.code ?? e?.cause?.code ?? null,
+      message: (e?.message ?? "").replace(/\/\/[^@\s]*@/g, "//***@"),
+    },
+    { status: 500 },
+  );
 }
 
 /** 모든 링크의 클릭 수를 한 번에 반환합니다. 예: { counts: { github: 42, blog: 3, email: 0 } } */
